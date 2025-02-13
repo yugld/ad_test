@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Item, ApiError } from './types';
+import { Item, ApiError, GetParams } from './types';
 
 const API_URL = 'http://localhost:3000';
 
@@ -8,19 +8,19 @@ const api = axios.create({
   timeout: 5000,
 });
 
-export const getAllItems = async (): Promise<Item[]> => {
+export const createItem = async (newItem: Item): Promise<Item> => {
   try {
-    const response = await api.get('/items');
-    return response.data;
+    const { data } = await api.post<Item>('/items', newItem);
+    return data;
   } catch (error) {
     throw handleApiError(error);
   }
 };
 
-export const createItem = async (newItem: Item): Promise<Item> => {
+export const getItems = async (params: Partial<GetParams> = {}) => {
   try {
-    const { data } = await api.post<Item>('/items', newItem);
-    return data;
+    const response = await api.get('/items', { params });
+    return response.data;
   } catch (error) {
     throw handleApiError(error);
   }
@@ -50,15 +50,6 @@ export const updateItem = async (
 export const deleteItem = async (id: number) => {
   try {
     await api.delete(`/items/${id}`);
-  } catch (error) {
-    throw handleApiError(error);
-  }
-};
-
-export const getCategories = async () => {
-  try {
-    const response = await api.get(`/categories`);
-    return response.data;
   } catch (error) {
     throw handleApiError(error);
   }

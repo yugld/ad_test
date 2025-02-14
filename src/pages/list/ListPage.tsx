@@ -17,7 +17,7 @@ import { useFilterState } from '@hooks/useFilterState';
 import { usePagination } from '@hooks/usePagination';
 import { useQueryFilters } from '@hooks/useQueryFilters';
 
-export default function ListPage() {
+function ListPage() {
   const navigate = useNavigate();
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(false);
@@ -138,3 +138,4 @@ export default function ListPage() {
     </Container>
   );
 }
+export default ListPage;

@@ -37,7 +37,6 @@ function AdForm() {
   return (
     <Container
       maxWidth="lg"
-      component="main"
       sx={{
         my: 16,
         gap: 4,
@@ -197,4 +196,4 @@ function AdForm() {
   );
 }
 
-export { AdForm };
+export default AdForm;

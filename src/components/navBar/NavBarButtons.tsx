@@ -1,6 +1,7 @@
 import { Box, Button } from '@mui/material';
 import ColorModeIconDropdown from '@theme/ColorModeIconDropdown';
 import { Link } from 'react-router-dom';
+import Logo from './Logo';
 
 const buttons = [
   { text: 'Объявления', path: '/list' },
@@ -12,6 +13,7 @@ export default function NavBarButtons() {
   return (
     <>
       <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
+        <Logo />
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
           {buttons.map(({ text, path }) => (
             <Button

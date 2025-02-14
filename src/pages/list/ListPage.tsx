@@ -1,3 +1,140 @@
-export const ListPage = () => {
-  return <div>ListPage</div>;
-};
+import { useState, useEffect, useCallback } from 'react';
+import {
+  Button,
+  CircularProgress,
+  Pagination,
+  Box,
+  Container,
+} from '@mui/material';
+import Grid from '@mui/material/Grid2';
+import { useNavigate } from 'react-router-dom';
+import { Item, Categories } from '@api/types';
+import { getItems } from '@api/api';
+import { CategoryChips } from './CategoryChips';
+import Search from './Search';
+import CardComponent from './Card';
+import { useFilterState } from '@hooks/useFilterState';
+import { usePagination } from '@hooks/usePagination';
+import { useQueryFilters } from '@hooks/useQueryFilters';
+
+export default function ListPage() {
+  const navigate = useNavigate();
+  const [items, setItems] = useState<Item[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [total, setTotal] = useState(0);
+
+  const { search, type, setSearch, setType } = useFilterState();
+  const { page, setPage, pageSize, onPageChange } = usePagination({
+    total,
+  });
+  useQueryFilters({ search, type });
+
+  const loadingItems = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { items, total } = await getItems({ page, search, type });
+      setItems(items);
+      setTotal(total);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }, [page, search, type]);
+
+  useEffect(() => {
+    loadingItems();
+  }, [loadingItems]);
+
+  const handleSearch = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearch(event.target.value);
+      setPage(1);
+    },
+    [setSearch, setPage]
+  );
+
+  const handleChangeType = useCallback(
+    (value: Categories) => {
+      setType(value);
+      setPage(1);
+    },
+    [setType, setPage]
+  );
+  const handleChangePagination = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
+
+  return (
+    <Container
+      maxWidth="lg"
+      component="main"
+      sx={{ display: 'flex', flexDirection: 'column', my: 16, gap: 4 }}
+    >
+      <Box
+        sx={{
+          display: { xs: 'flex', sm: 'none' },
+          flexDirection: 'row',
+          gap: 1,
+          width: { xs: '100%', md: 'fit-content' },
+          overflow: 'auto',
+        }}
+      >
+        <Search search={search} handleSearch={handleSearch} />
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column-reverse', md: 'row' },
+          width: '100%',
+          justifyContent: 'space-between',
+          alignItems: { xs: 'start', md: 'center' },
+          gap: 4,
+          overflow: 'auto',
+        }}
+      >
+        <CategoryChips value={type} onChange={handleChangeType} />
+        <Box
+          sx={{
+            display: { xs: 'none', sm: 'flex' },
+            flexDirection: 'row',
+            gap: 1,
+            width: { xs: '100%', md: 'fit-content' },
+            overflow: 'auto',
+          }}
+        >
+          <Search search={search} handleSearch={handleSearch} />
+        </Box>
+      </Box>
+      ИЗМЕНИ И ДОБАВЬ КНОПКУ СОЗДАТЬ ОБЪЯВЛЕНИЕ
+      {loading ? (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          style={{ height: '50vh' }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Grid container spacing={2}>
+          {items.map((ad) => (
+            <CardComponent key={ad.id} {...ad} />
+          ))}
+        </Grid>
+      )}
+      <Pagination
+        sx={{ display: 'flex', flexDirection: 'row', pt: 4 }}
+        count={Math.ceil(total / pageSize)}
+        page={page}
+        onChange={handleChangePagination}
+      />
+      <Button variant="contained" onClick={() => navigate(`/form`)}>
+        Создать объявление
+      </Button>
+    </Container>
+  );
+}

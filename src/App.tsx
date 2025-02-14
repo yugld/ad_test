@@ -1,7 +1,7 @@
 import NavBar from '@components/navBar/NavBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AdForm } from '@pages/form/AdForm';
-import { ItemPage } from '@pages/item/ItemPage';
+import ItemPage from '@pages/item/ItemPage';
 import ListPage from '@pages/list/ListPage';
 import { NotFound } from '@pages/notFound/NotFound';
 import AppTheme from '@theme/AppTheme';

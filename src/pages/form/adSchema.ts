@@ -2,8 +2,8 @@ import { z } from 'zod';
 
 const adCategories = ['Недвижимость', 'Авто', 'Услуги'] as const;
 const adPropetyTypes = ['Квартира', 'Дом', 'Коттедж'] as const;
-const adBrand = ['Audi', 'Volkswagen', 'BMW'] as const;
-const adServiceType = ['Ремонт', 'Уборка', 'Доставка'] as const;
+const adBrands = ['Audi', 'Volkswagen', 'BMW'] as const;
+const adServiceTypes = ['Ремонт', 'Уборка', 'Доставка'] as const;
 
 const numberValidation = z
   .number({
@@ -25,7 +25,7 @@ const numberValidationMin1 = numberValidation.min(1, {
 
 const realEstateSchema = z.object({
   type: z.literal('Недвижимость'),
-  propertyType: z.enum(adPropetyTypes).nullable(),
+  propertyType: z.enum(adPropetyTypes, { message: 'Выберите из списка' }),
   area: numberValidationMin1,
   rooms: numberValidationMin1,
   price: numberValidationMin1,
@@ -33,7 +33,7 @@ const realEstateSchema = z.object({
 
 const autoSchema = z.object({
   type: z.literal('Авто'),
-  brand: z.enum(adBrand).nullable(),
+  brand: z.enum(adBrands, { message: 'Выберите из списка' }),
   model: stringValidation,
   year: numberValidation.min(1885, {
     message: 'Число больше 1885 и меньше 2026',
@@ -43,7 +43,7 @@ const autoSchema = z.object({
 
 const servicesSchema = z.object({
   type: z.literal('Услуги'),
-  serviceType: z.enum(adServiceType).nullable(),
+  serviceType: z.enum(adServiceTypes).nullable(),
   experience: numberValidationMin1,
   cost: numberValidationMin1,
   workSchedule: stringValidation.optional(),
@@ -54,7 +54,7 @@ const baseAdSchema = z.object({
   description: stringValidation,
   location: stringValidation,
   image: z.string().optional(),
-  type: z.enum(adCategories).nullable(),
+  type: z.enum(adCategories, { message: 'Выберите из списка' }),
 });
 
 const adSchema = baseAdSchema.and(
@@ -82,4 +82,12 @@ const defaultValues: AdSchema = {
   workSchedule: '',
 };
 
-export { defaultValues, adSchema, adCategories, type AdSchema };
+export {
+  defaultValues,
+  adSchema,
+  adCategories,
+  adPropetyTypes,
+  adBrands,
+  adServiceTypes,
+  type AdSchema,
+};

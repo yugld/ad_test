@@ -12,7 +12,15 @@ import {
 } from '@mui/material';
 import { Controller, SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { AdSchema, adSchema, defaultValues, adCategories } from './adSchema';
+import {
+  AdSchema,
+  adSchema,
+  defaultValues,
+  adCategories,
+  adPropetyTypes,
+  adBrands,
+  adServiceTypes,
+} from './adSchema';
 import { useEffect, useState } from 'react';
 
 function FormPage() {
@@ -120,14 +128,17 @@ function FormPage() {
           <>
             <TextField
               {...register('propertyType')}
+              defaultValue=""
               label="Тип недвижимости"
               helperText={errors.propertyType?.message}
               error={!!errors.propertyType}
               select
             >
-              <MenuItem value="Квартира">Квартира</MenuItem>
-              <MenuItem value="Дом">Дом</MenuItem>
-              <MenuItem value="Коттедж">Коттедж</MenuItem>
+              {adPropetyTypes.map((propertyType) => (
+                <MenuItem key={propertyType} value={propertyType}>
+                  {propertyType}
+                </MenuItem>
+              ))}
             </TextField>
             <TextField
               type="number"
@@ -160,10 +171,13 @@ function FormPage() {
               helperText={errors.brand?.message}
               error={!!errors.brand}
               select
+              defaultValue=""
             >
-              <MenuItem value="Audi">Audi</MenuItem>
-              <MenuItem value="Volkswagen">Volkswagen</MenuItem>
-              <MenuItem value="BMW">BMW</MenuItem>
+              {adBrands.map((brand) => (
+                <MenuItem key={brand} value={brand}>
+                  {brand}
+                </MenuItem>
+              ))}
             </TextField>
             <TextField
               {...register('model')}
@@ -189,14 +203,17 @@ function FormPage() {
           <>
             <TextField
               {...register('serviceType')}
+              defaultValue=""
               label="Тип услуги"
               helperText={errors.serviceType?.message}
               error={!!errors.serviceType}
               select
             >
-              <MenuItem value="Ремонт">Ремонт</MenuItem>
-              <MenuItem value="Уборка">Уборка</MenuItem>
-              <MenuItem value="Доставка">Доставка</MenuItem>
+              {adServiceTypes.map((type) => (
+                <MenuItem key={type} value={type}>
+                  {type}
+                </MenuItem>
+              ))}
             </TextField>
             <TextField
               type="number"

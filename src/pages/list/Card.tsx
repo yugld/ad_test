@@ -4,10 +4,8 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid2';
-
 import { useNavigate } from 'react-router-dom';
 import { Item } from '@api/types';
-import { Button } from '@mui/material';
 
 const SyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
@@ -36,7 +34,7 @@ const CardComponent = ({ id, name, photo, type, location }: Item) => {
       <SyledCard
         variant="outlined"
         tabIndex={0}
-        // onClick={() => navigate(`/item/${id}`)}
+        onClick={() => navigate(`/item/${id}`)}
       >
         <CardMedia
           component="img"
@@ -58,8 +56,7 @@ const CardComponent = ({ id, name, photo, type, location }: Item) => {
             {type}
             <Typography component="div">{location}</Typography>
           </Typography>
-          Оставить или кнопку или ссылку по карточке
-          <Button onClick={() => navigate(`/item/${id}`)}>Открыть</Button>
+          {/* <Button onClick={() => navigate(`/item/${id}`)}>Открыть</Button>  Оставила без кнопки, потому что интуитивно переход по лубоой части карточки более удобен*/}
         </SyledCardContent>
       </SyledCard>
     </Grid>

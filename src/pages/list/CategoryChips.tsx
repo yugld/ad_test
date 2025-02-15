@@ -31,11 +31,9 @@ export function CategoryChips({ value, onChange }: CategoryChipsProps) {
           label={type}
           sx={{
             backgroundColor:
-              value === type
+              value === type || (value === '' && type === 'Все категории')
                 ? ''
-                : value === '' && type === 'Все категории'
-                  ? ''
-                  : 'transparent',
+                : 'transparent',
             border: 'none',
           }}
         />

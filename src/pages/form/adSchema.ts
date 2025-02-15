@@ -1,43 +1,65 @@
 import { z } from 'zod';
 
 const adCategories = ['Недвижимость', 'Авто', 'Услуги'] as const;
+const adPropetyTypes = ['Квартира', 'Дом', 'Коттедж'] as const;
+const adBrand = ['Audi', 'Volkswagen', 'BMW'] as const;
+const adServiceType = ['Ремонт', 'Уборка', 'Доставка'] as const;
+
+const numberValidation = z
+  .number({
+    message: 'Обязательное поле, должно быть числом',
+  })
+  .min(1, { message: 'Число больше 0' });
+
+const stringValidation = z
+  .string()
+  .min(2, { message: 'Обязательное поле, минимум 2 символа' });
+
+const numberValidationMin0 = numberValidation.min(0, {
+  message: 'Число больше 0',
+});
+
+const numberValidationMin1 = numberValidation.min(1, {
+  message: 'Число больше 0',
+});
 
 const realEstateSchema = z.object({
   type: z.literal('Недвижимость'),
-  propertyType: z.string().min(1),
-  area: z.number().min(1),
-  rooms: z.number().min(1),
-  price: z.number().min(0),
+  propertyType: z.enum(adPropetyTypes).nullable(),
+  area: numberValidationMin1,
+  rooms: numberValidationMin1,
+  price: numberValidationMin1,
 });
 
 const autoSchema = z.object({
   type: z.literal('Авто'),
-  brand: z.string().min(1),
-  model: z.string().min(1),
-  year: z.number().min(1900),
-  mileage: z.number().optional(),
+  brand: z.enum(adBrand).nullable(),
+  model: stringValidation,
+  year: numberValidation.min(1885, {
+    message: 'Число больше 1885 и меньше 2026',
+  }),
+  mileage: numberValidationMin0.optional(),
 });
 
 const servicesSchema = z.object({
   type: z.literal('Услуги'),
-  serviceType: z.string().min(1),
-  experience: z.number().min(0),
-  cost: z.number().min(0),
-  workSchedule: z.string().optional(),
+  serviceType: z.enum(adServiceType).nullable(),
+  experience: numberValidationMin1,
+  cost: numberValidationMin1,
+  workSchedule: stringValidation.optional(),
 });
 
-const adSchema = z
-  .object({
-    name: z.string().min(1),
-    description: z.string().min(1),
-    location: z.string().min(1),
-    image: z.string().optional(),
-    type: z.enum(adCategories).nullable(),
-  })
-  .and(
-    z.discriminatedUnion('type', [realEstateSchema, autoSchema, servicesSchema])
-  );
+const baseAdSchema = z.object({
+  name: stringValidation,
+  description: stringValidation,
+  location: stringValidation,
+  image: z.string().optional(),
+  type: z.enum(adCategories).nullable(),
+});
 
+const adSchema = baseAdSchema.and(
+  z.discriminatedUnion('type', [realEstateSchema, autoSchema, servicesSchema])
+);
 type AdSchema = z.infer<typeof adSchema>;
 
 const defaultValues: AdSchema = {

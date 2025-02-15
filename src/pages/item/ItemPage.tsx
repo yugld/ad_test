@@ -10,7 +10,7 @@ import {
   CardMedia,
   Container,
 } from '@mui/material';
-import { getItemById } from '@api/api';
+import { getItemById, deleteItem } from '@api/api';
 import { Categories, Item } from '@api/types';
 
 function ItemPage() {
@@ -22,16 +22,32 @@ function ItemPage() {
     if (!idItem) return;
     const id = parseInt(idItem, 10);
     setLoading(true);
-    const data = await getItemById(id);
-    setItem(data);
-    setLoading(false);
+    try {
+      const data = await getItemById(id);
+      setItem(data);
+    } catch (error) {
+      console.error('Error fetching item:', error);
+    } finally {
+      setLoading(false);
+    }
   }, [idItem]);
 
   useEffect(() => {
     loadItem();
   }, [loadItem]);
 
+  const handleDelete = async () => {
+    const itemId = item.id;
+    try {
+      await deleteItem(itemId);
+      navigate('/');
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  };
+
   if (loading) return <CircularProgress />;
+
   const renderItemDetails = () => {
     switch (item.type) {
       case Categories.AUTO:
@@ -61,6 +77,8 @@ function ItemPage() {
             <p>График работы:{item.workSchedule}</p>
           </>
         );
+      default:
+        return <>Детали не загрузились...</>;
     }
   };
 
@@ -74,48 +92,47 @@ function ItemPage() {
         padding: 2,
       }}
     >
-      {item ? (
-        <>
-          <CardMedia
-            component="img"
-            height="300"
-            image={item.photo || '../../src/assets/not-image.png'}
-            alt={item.name}
-            sx={{
-              aspectRatio: '16 / 9',
-              borderBottom: '1px solid',
-              borderColor: 'divider',
-            }}
-          />
-          <CardContent>
-            <Typography variant="h5" component="div">
-              {item.name}
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              component="main"
-              color="text.secondary"
+      <>
+        <CardMedia
+          component="img"
+          height="300"
+          image={item.photo || '../../src/assets/not-image.png'}
+          alt={item.name}
+          sx={{
+            aspectRatio: '16 / 9',
+            borderBottom: '1px solid',
+            borderColor: 'divider',
+          }}
+        />
+        <CardContent>
+          <Typography variant="h5" component="div">
+            {item.name}
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            component="main"
+            color="text.secondary"
+          >
+            {item.description}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {item.location}
+          </Typography>
+          {renderItemDetails()}
+          <Box mt={2} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate(`/form?id=${item.id}`)}
             >
-              {item.description}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {item.location}
-            </Typography>
-            {renderItemDetails()}
-            <Box mt={2}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => navigate(`/form?id=${item.id}`)}
-              >
-                Редактировать
-              </Button>
-            </Box>
-          </CardContent>
-        </>
-      ) : (
-        <div>Объявление не найдено</div>
-      )}
+              Редактировать
+            </Button>
+            <Button variant="contained" color="error" onClick={handleDelete}>
+              Удалить
+            </Button>
+          </Box>
+        </CardContent>
+      </>
     </Container>
   );
 }

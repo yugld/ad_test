@@ -76,7 +76,7 @@ function ListPage() {
     >
       <Box
         sx={{
-          display: { xs: 'flex', sm: 'none' },
+          display: { xs: 'flex', md: 'none' },
           flexDirection: 'row',
           gap: 1,
           width: { xs: '100%', md: 'fit-content' },
@@ -84,11 +84,19 @@ function ListPage() {
         }}
       >
         <Search search={search} handleSearch={handleSearch} />
+        <Button
+          size="small"
+          variant="contained"
+          aria-label="add new advertismen button"
+          onClick={() => navigate(`/form`)}
+        >
+          +
+        </Button>
       </Box>
       <Box
         sx={{
           display: 'flex',
-          flexDirection: { xs: 'column-reverse', md: 'row' },
+          flexDirection: { md: 'row' },
           width: '100%',
           justifyContent: 'space-between',
           alignItems: { xs: 'start', md: 'center' },
@@ -99,7 +107,7 @@ function ListPage() {
         <CategoryChips value={type} onChange={handleChangeType} />
         <Box
           sx={{
-            display: { xs: 'none', sm: 'flex' },
+            display: { xs: 'none', md: 'flex' },
             flexDirection: 'row',
             gap: 1,
             width: { xs: '100%', md: 'fit-content' },
@@ -107,9 +115,15 @@ function ListPage() {
           }}
         >
           <Search search={search} handleSearch={handleSearch} />
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => navigate(`/form`)}
+          >
+            Разместить объявление
+          </Button>
         </Box>
       </Box>
-      ИЗМЕНИ И ДОБАВЬ КНОПКУ СОЗДАТЬ ОБЪЯВЛЕНИЕ
       {loading ? (
         <Box
           display="flex"
@@ -132,9 +146,6 @@ function ListPage() {
         page={page}
         onChange={handleChangePagination}
       />
-      <Button variant="contained" onClick={() => navigate(`/form`)}>
-        Создать объявление
-      </Button>
     </Container>
   );
 }

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const adCategories = ['Недвижимость', 'Авто', 'Услуги'] as const;
-const adPropetyTypes = ['Квартира', 'Дом', 'Коттедж'] as const;
+const adPropetyTypes = ['Квартира', 'Дача', 'Коттедж'] as const;
 const adBrands = ['Audi', 'Volkswagen', 'BMW'] as const;
 const adServiceTypes = ['Ремонт', 'Уборка', 'Доставка'] as const;
 

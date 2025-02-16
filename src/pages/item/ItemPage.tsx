@@ -105,6 +105,7 @@ function ItemPage() {
             sx={{
               border: '1px solid',
               borderColor: 'divider',
+              borderRadius: '8px',
               width: { xs: '100%', md: '60%' },
               textAlign: 'center',
             }}

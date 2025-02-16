@@ -4,8 +4,7 @@ import Logo from './Logo';
 
 const buttons = [
   { text: 'Объявления', path: '/list' },
-  { text: 'Разместить объявление', path: '/form' },
-  { text: 'Ошибка', path: '/error' },
+  { text: 'Страница ошибки', path: '/error' },
 ];
 
 export default function NavBarButtons() {

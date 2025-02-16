@@ -53,7 +53,7 @@ const baseAdSchema = z.object({
   name: stringValidation,
   description: stringValidation,
   location: stringValidation,
-  image: z.string().optional(),
+  photo: z.string().optional(),
   type: z.enum(adCategories, { message: 'Выберите из списка' }),
 });
 
@@ -66,7 +66,7 @@ const defaultValues: AdSchema = {
   name: '',
   description: '',
   location: '',
-  image: '',
+  photo: '',
   type: '',
   propertyType: '',
   area: 0,

@@ -120,7 +120,7 @@ function FormPage() {
             error={!!errors.location}
           />
           <label>Ссылка на фото</label>
-          <TextField {...register('image')} label="" />
+          <TextField {...register('photo')} label="" />
           <CategoryFields
             control={control}
             register={register}

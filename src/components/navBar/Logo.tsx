@@ -7,7 +7,7 @@ export default function Logo() {
       to="/list"
       component={Link}
       variant="text"
-      sx={{ fontSize: '1.5rem', fontWeight: 'bold' }}
+      sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'black' }}
     >
       Авито
     </Button>

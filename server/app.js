@@ -9,7 +9,7 @@ const ItemTypes = {
 };
 
 const app = express();
-app.use(cors()); //ОСТАВИТЬ или удалить - уточнить
+app.use(cors());
 app.use(bodyParser.json());
 
 // In-memory хранилище для объявлений
@@ -140,7 +140,7 @@ const testItems = [
     name: 'Квартира в центре',
     description: 'Просторная квартира в центре города',
     location: 'Москва',
-    photo: '',
+    photo: 'https://picsum.photos/400/300?random=1',
     type: 'Недвижимость',
     propertyType: 'Квартира',
     area: 100,
@@ -152,7 +152,7 @@ const testItems = [
     name: 'Дача в Подмосковье',
     description: 'Уютная дача с участком 10 соток',
     location: 'Подмосковье',
-    photo: '',
+    photo: 'https://picsum.photos/400/300?random=2',
     type: 'Недвижимость',
     propertyType: 'Дача',
     area: 80,

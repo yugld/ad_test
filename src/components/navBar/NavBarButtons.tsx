@@ -1,5 +1,4 @@
 import { Box, Button } from '@mui/material';
-import ColorModeIconDropdown from '@theme/ColorModeIconDropdown';
 import { Link } from 'react-router-dom';
 import Logo from './Logo';
 
@@ -42,7 +41,6 @@ export default function NavBarButtons() {
         <Button color="primary" variant="contained" size="small">
           Регистрация
         </Button>
-        <ColorModeIconDropdown />
       </Box>
     </>
   );

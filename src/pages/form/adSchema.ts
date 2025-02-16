@@ -43,7 +43,7 @@ const autoSchema = z.object({
 
 const servicesSchema = z.object({
   type: z.literal('Услуги'),
-  serviceType: z.enum(adServiceTypes).nullable(),
+  serviceType: z.enum(adServiceTypes, { message: 'Выберите из списка' }),
   experience: numberValidationMin1,
   cost: numberValidationMin1,
   workSchedule: stringValidation.optional(),

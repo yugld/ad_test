@@ -10,8 +10,6 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { Link } from 'react-router-dom';
-import ColorModeIconDropdown from '@theme/ColorModeIconDropdown';
-
 const buttons = [
   { text: 'Объявления', path: '/list' },
   { text: 'Разместить объявление', path: '/form' },
@@ -27,7 +25,6 @@ export default function MobileDrawer() {
 
   return (
     <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
-      <ColorModeIconDropdown size="medium" />
       <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
         <MenuIcon />
       </IconButton>

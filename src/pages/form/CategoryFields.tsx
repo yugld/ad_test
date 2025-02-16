@@ -1,8 +1,10 @@
+/* eslint-disable react/prop-types */
 import {
   Control,
   Controller,
   UseFormRegister,
   useWatch,
+  FieldErrors,
 } from 'react-hook-form';
 import {
   FormControl,
@@ -22,7 +24,7 @@ import {
 interface CategoryFieldsProps {
   control: Control<AdSchema>;
   register: UseFormRegister<AdSchema>;
-  errors: any;
+  errors: FieldErrors<AdSchema>;
 }
 
 export const CategoryFields: React.FC<CategoryFieldsProps> = ({

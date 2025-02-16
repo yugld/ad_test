@@ -11,6 +11,7 @@ import {
 import { getItemById, deleteItem } from '@api/api';
 import { Categories, Item } from '@api/types';
 import Loader from '@components/Loader';
+import { toast } from 'react-toastify';
 
 function ItemPage() {
   const { id: idItem } = useParams<{ id: string }>();
@@ -25,7 +26,7 @@ function ItemPage() {
       const data = await getItemById(id);
       setItem(data);
     } catch (error) {
-      console.error('Error fetching item:', error);
+      toast('Ошибка при получении объявления');
     } finally {
       setLoading(false);
     }
@@ -38,10 +39,10 @@ function ItemPage() {
   const handleDelete = async () => {
     const itemId = item.id;
     try {
-      await deleteItem(itemId);
+      await deleteItem(itemId).then(() => toast('Объявление удалено!'));
       navigate('/');
     } catch (error) {
-      console.error('Error deleting item:', error);
+      toast('Не удалось удалить объявление');
     }
   };
 

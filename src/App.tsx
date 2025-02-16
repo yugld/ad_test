@@ -1,4 +1,5 @@
 import NavBar from '@components/navBar/NavBar';
+import CustomToastContainer from '@components/ToastContainer';
 import CssBaseline from '@mui/material/CssBaseline';
 import FormPage from '@pages/form/FormPage';
 import ItemPage from '@pages/item/ItemPage';
@@ -22,6 +23,7 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
+        <CustomToastContainer />
       </AppTheme>
     </>
   );

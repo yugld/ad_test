@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AdSchema, adSchema, defaultValues } from './adSchema';
 import { getItemById, updateItem, createItem } from '../../api/api';
 import { CategoryFields } from './CategoryFields';
+import { toast } from 'react-toastify';
 import {
   Container,
   Typography,
@@ -57,7 +58,7 @@ function FormPage() {
             setLoading(false);
           }
         } catch (error) {
-          console.error('Error fetching item:', error);
+          toast('Ошибка при получении объявления');
         }
       }
       setLoading(false);
@@ -68,9 +69,15 @@ function FormPage() {
   const onSubmit: SubmitHandler<AdSchema> = async (data) => {
     if (id) {
       const idUpdate = parseInt(id, 10);
-      await updateItem(idUpdate, data);
+      await updateItem(idUpdate, data)
+        .then(() => toast('Объявление сохранено!'))
+        .catch(() =>
+          toast('Не удалось сохранить объявление, попробуйте ещё раз')
+        );
     } else {
-      await createItem(data);
+      await createItem(data)
+        .then(() => toast('Объявление опубликовано!'))
+        .catch(() => toast('Ошибка публикации объявления, попробуйте ещё раз'));
     }
     navigate('/list');
   };

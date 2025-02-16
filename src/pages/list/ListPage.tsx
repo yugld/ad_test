@@ -11,6 +11,7 @@ import { useFilterState } from '@hooks/useFilterState';
 import { usePagination } from '@hooks/usePagination';
 import { useQueryFilters } from '@hooks/useQueryFilters';
 import Loader from '@components/Loader';
+import { toast } from 'react-toastify';
 
 function ListPage() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ function ListPage() {
   const [total, setTotal] = useState(0);
 
   const { search, type, setSearch, setType } = useFilterState();
-  const { page, setPage, pageSize, onPageChange } = usePagination({
+  const { page, setPage, pageSize } = usePagination({
     total,
   });
   useQueryFilters({ search, type });
@@ -31,7 +32,7 @@ function ListPage() {
       setItems(items);
       setTotal(total);
     } catch (error) {
-      console.error(error);
+      toast('Не удалось загрузить объявления');
     } finally {
       setLoading(false);
     }

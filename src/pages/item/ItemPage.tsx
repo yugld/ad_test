@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Card,
   Button,
   CircularProgress,
   Box,
@@ -87,24 +86,28 @@ function ItemPage() {
       maxWidth="lg"
       sx={{
         my: 16,
-        gap: 4,
-        width: 700,
         padding: 2,
       }}
     >
-      <>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          gap: 4,
+        }}
+      >
         <CardMedia
           component="img"
-          height="300"
           image={item.photo || '../../src/assets/not-image.png'}
           alt={item.name}
           sx={{
-            aspectRatio: '16 / 9',
-            borderBottom: '1px solid',
+            border: '1px solid',
             borderColor: 'divider',
+            width: { xs: '100%', md: '60%' },
+            textAlign: 'center',
           }}
         />
-        <CardContent>
+        <CardContent sx={{ width: { xs: '100%', md: '40%' } }}>
           <Typography variant="h5" component="div">
             {item.name}
           </Typography>
@@ -119,7 +122,7 @@ function ItemPage() {
             {item.location}
           </Typography>
           {renderItemDetails()}
-          <Box mt={2} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box mt={2} sx={{ display: 'flex', gap: 1 }}>
             <Button
               variant="contained"
               color="primary"
@@ -127,12 +130,12 @@ function ItemPage() {
             >
               Редактировать
             </Button>
-            <Button variant="contained" color="error" onClick={handleDelete}>
+            <Button variant="outlined" onClick={handleDelete}>
               Удалить
             </Button>
           </Box>
         </CardContent>
-      </>
+      </Box>
     </Container>
   );
 }

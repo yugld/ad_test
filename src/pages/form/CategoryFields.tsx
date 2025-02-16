@@ -35,7 +35,7 @@ export const CategoryFields: React.FC<CategoryFieldsProps> = ({
   return (
     <>
       <FormControl fullWidth>
-        Категория
+        <label>Категория</label>
         <Controller
           control={control}
           name="type"

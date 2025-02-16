@@ -7,14 +7,14 @@ import Grid from '@mui/material/Grid2';
 import { useNavigate } from 'react-router-dom';
 import { Item } from '@api/types';
 
-const SyledCard = styled(Card)(({ theme }) => ({
+const SyledCard = styled(Card)(() => ({
   display: 'flex',
   flexDirection: 'column',
   padding: 0,
   height: '100%',
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: 'transparent',
+  gap: '0',
   '&:hover': {
-    backgroundColor: 'transparent',
     cursor: 'pointer',
   },
 }));
@@ -22,7 +22,7 @@ const SyledCard = styled(Card)(({ theme }) => ({
 const SyledCardContent = styled(CardContent)({
   display: 'flex',
   flexDirection: 'column',
-  gap: 4,
+  gap: 2,
   padding: 16,
   flexGrow: 1,
 });
@@ -30,15 +30,11 @@ const SyledCardContent = styled(CardContent)({
 const CardComponent = ({ id, name, photo, type, location }: Item) => {
   const navigate = useNavigate();
   return (
-    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-      <SyledCard
-        variant="outlined"
-        tabIndex={0}
-        onClick={() => navigate(`/item/${id}`)}
-      >
+    <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 3 }}>
+      <SyledCard tabIndex={0} onClick={() => navigate(`/item/${id}`)}>
         <CardMedia
           component="img"
-          height="200"
+          height="300"
           image={photo || 'src/assets/not-image.png'}
           alt={name}
           sx={{
@@ -47,14 +43,15 @@ const CardComponent = ({ id, name, photo, type, location }: Item) => {
             borderColor: 'divider',
           }}
         />
-
         <SyledCardContent>
-          <Typography gutterBottom variant="h6" component="div">
+          <Typography variant="h6" component="div">
             {name}
           </Typography>
-          <Typography gutterBottom component="div">
+          <Typography component="div">
             {type}
-            <Typography component="div">{location}</Typography>
+            <Typography gutterBottom component="div">
+              {location}
+            </Typography>
           </Typography>
           {/* <Button onClick={() => navigate(`/item/${id}`)}>Открыть</Button>  Оставила без кнопки, потому что интуитивно переход по лубоой части карточки более удобен*/}
         </SyledCardContent>

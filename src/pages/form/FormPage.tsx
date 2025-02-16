@@ -5,13 +5,22 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AdSchema, adSchema, defaultValues } from './adSchema';
 import { getItemById, updateItem, createItem } from '../../api/api';
 import { CategoryFields } from './CategoryFields';
-import { Container, Typography, Stack, TextField, Button } from '@mui/material';
+import {
+  Container,
+  Typography,
+  Stack,
+  TextField,
+  Button,
+  Box,
+} from '@mui/material';
+import Loader from '@components/Loader';
 
 function FormPage() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const id = params.get('id');
   const [initialValues, setInitialValues] = useState(defaultValues);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -29,6 +38,7 @@ function FormPage() {
   useEffect(() => {
     const fetchItem = async () => {
       if (id) {
+        setLoading(true);
         try {
           const itemId = parseInt(id, 10);
           const item = await getItemById(itemId);
@@ -44,11 +54,13 @@ function FormPage() {
             if (item.type === 'Услуги' && item.serviceType) {
               setValue('serviceType', item.serviceType);
             }
+            setLoading(false);
           }
         } catch (error) {
           console.error('Error fetching item:', error);
         }
       }
+      setLoading(false);
     };
     fetchItem();
   }, [id, reset, setValue]);
@@ -68,41 +80,53 @@ function FormPage() {
       maxWidth="lg"
       sx={{
         my: 16,
-        gap: 4,
-        width: 700,
         padding: 2,
       }}
     >
-      <Stack sx={{ gap: 2 }}>
-        <Typography variant="h6">
-          {id ? 'Редактирование объявления' : 'Новое объявление'}
-        </Typography>
-        <TextField
-          label="Название"
-          {...register('name')}
-          helperText={errors.name?.message}
-          error={!!errors.name}
-        />
-        <TextField
-          label="Описание"
-          {...register('description')}
-          multiline
-          helperText={errors.description?.message}
-          error={!!errors.description}
-        />
-        <TextField
-          label="Локация"
-          {...register('location')}
-          helperText={errors.location?.message}
-          error={!!errors.location}
-        />
-        <TextField {...register('image')} label="Ссылка на фото" />
-        <CategoryFields control={control} register={register} errors={errors} />
-        <Button variant="contained" onClick={handleSubmit(onSubmit)}>
-          {id ? 'Сохранить изменения' : 'Опубликовать'}
-        </Button>
-        <Button onClick={() => navigate('/')}>Отменить и выйти</Button>
-      </Stack>
+      {loading ? (
+        <Loader />
+      ) : (
+        <Stack sx={{ gap: 2, maxWidth: '800px' }}>
+          <Typography variant="h6">
+            {id ? 'Редактирование объявления' : 'Новое объявление'}
+          </Typography>
+          <label>Название</label>
+          <TextField
+            label=""
+            {...register('name')}
+            helperText={errors.name?.message}
+            error={!!errors.name}
+          />
+          <label>Описание</label>
+          <TextField
+            label=""
+            {...register('description')}
+            multiline
+            helperText={errors.description?.message}
+            error={!!errors.description}
+          />
+          <label>Локация</label>
+          <TextField
+            label=""
+            {...register('location')}
+            helperText={errors.location?.message}
+            error={!!errors.location}
+          />
+          <label>Ссылка на фото</label>
+          <TextField {...register('image')} label="" />
+          <CategoryFields
+            control={control}
+            register={register}
+            errors={errors}
+          />
+          <Box mt={2} sx={{ display: 'flex', gap: 1 }}>
+            <Button variant="contained" onClick={handleSubmit(onSubmit)}>
+              {id ? 'Сохранить изменения' : 'Опубликовать'}
+            </Button>
+            <Button onClick={() => navigate('/')}>Отменить и выйти</Button>
+          </Box>
+        </Stack>
+      )}
     </Container>
   );
 }

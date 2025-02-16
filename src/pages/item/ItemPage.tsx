@@ -2,7 +2,6 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Button,
-  CircularProgress,
   Box,
   Typography,
   CardContent,
@@ -11,6 +10,7 @@ import {
 } from '@mui/material';
 import { getItemById, deleteItem } from '@api/api';
 import { Categories, Item } from '@api/types';
+import Loader from '@components/Loader';
 
 function ItemPage() {
   const { id: idItem } = useParams<{ id: string }>();
@@ -44,8 +44,6 @@ function ItemPage() {
       console.error('Error deleting item:', error);
     }
   };
-
-  if (loading) return <CircularProgress />;
 
   const renderItemDetails = () => {
     switch (item.type) {
@@ -89,53 +87,57 @@ function ItemPage() {
         padding: 2,
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-          gap: 4,
-        }}
-      >
-        <CardMedia
-          component="img"
-          image={item.photo || '../../src/assets/not-image.png'}
-          alt={item.name}
+      {loading ? (
+        <Loader />
+      ) : (
+        <Box
           sx={{
-            border: '1px solid',
-            borderColor: 'divider',
-            width: { xs: '100%', md: '60%' },
-            textAlign: 'center',
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            gap: 4,
           }}
-        />
-        <CardContent sx={{ width: { xs: '100%', md: '40%' } }}>
-          <Typography variant="h5" component="div">
-            {item.name}
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            component="main"
-            color="text.secondary"
-          >
-            {item.description}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {item.location}
-          </Typography>
-          {renderItemDetails()}
-          <Box mt={2} sx={{ display: 'flex', gap: 1 }}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => navigate(`/form?id=${item.id}`)}
+        >
+          <CardMedia
+            component="img"
+            image={item.photo || '../../src/assets/not-image.png'}
+            alt={item.name}
+            sx={{
+              border: '1px solid',
+              borderColor: 'divider',
+              width: { xs: '100%', md: '60%' },
+              textAlign: 'center',
+            }}
+          />
+          <CardContent sx={{ width: { xs: '100%', md: '40%' } }}>
+            <Typography variant="h5" component="div">
+              {item.name}
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              component="main"
+              color="text.secondary"
             >
-              Редактировать
-            </Button>
-            <Button variant="outlined" onClick={handleDelete}>
-              Удалить
-            </Button>
-          </Box>
-        </CardContent>
-      </Box>
+              {item.description}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {item.location}
+            </Typography>
+            {renderItemDetails()}
+            <Box mt={2} sx={{ display: 'flex', gap: 1 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => navigate(`/form?id=${item.id}`)}
+              >
+                Редактировать
+              </Button>
+              <Button variant="outlined" onClick={handleDelete}>
+                Удалить
+              </Button>
+            </Box>
+          </CardContent>
+        </Box>
+      )}
     </Container>
   );
 }

@@ -1,11 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import {
-  Button,
-  CircularProgress,
-  Pagination,
-  Box,
-  Container,
-} from '@mui/material';
+import { Button, Pagination, Box, Container } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { useNavigate } from 'react-router-dom';
 import { Item, Categories } from '@api/types';
@@ -16,6 +10,7 @@ import CardComponent from './Card';
 import { useFilterState } from '@hooks/useFilterState';
 import { usePagination } from '@hooks/usePagination';
 import { useQueryFilters } from '@hooks/useQueryFilters';
+import Loader from '@components/Loader';
 
 function ListPage() {
   const navigate = useNavigate();
@@ -125,14 +120,7 @@ function ListPage() {
         </Box>
       </Box>
       {loading ? (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          style={{ height: '50vh' }}
-        >
-          <CircularProgress />
-        </Box>
+        <Loader />
       ) : (
         <Grid container spacing={2}>
           {items.map((ad) => (

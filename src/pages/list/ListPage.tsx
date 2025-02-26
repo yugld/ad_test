@@ -68,7 +68,7 @@ function ListPage() {
     <Container
       maxWidth="lg"
       component="main"
-      sx={{ display: 'flex', flexDirection: 'column', my: 16, gap: 4 }}
+      sx={{ display: 'flex', flexDirection: 'column', mt: 16, mb: 10, gap: 4 }}
     >
       <Box
         sx={{
@@ -129,12 +129,14 @@ function ListPage() {
           ))}
         </Grid>
       )}
-      <Pagination
-        sx={{ display: 'flex', flexDirection: 'row', pt: 4 }}
-        count={Math.ceil(total / pageSize)}
-        page={page}
-        onChange={handleChangePagination}
-      />
+      {items.length > 0 && (
+        <Pagination
+          sx={{ display: 'flex', flexDirection: 'row', pt: 4 }}
+          count={Math.ceil(total / pageSize)}
+          page={page}
+          onChange={handleChangePagination}
+        />
+      )}
     </Container>
   );
 }

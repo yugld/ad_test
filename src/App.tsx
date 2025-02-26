@@ -1,3 +1,4 @@
+import Layout from '@components/Layout';
 import NavBar from '@components/navBar/NavBar';
 import CustomToastContainer from '@components/ToastContainer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,13 +16,15 @@ function App() {
         <CssBaseline enableColorScheme />
         <BrowserRouter>
           <NavBar />
-          <Routes>
-            <Route path="/" element={<ListPage />} />
-            <Route path="/list" element={<ListPage />} />
-            <Route path="/form" element={<FormPage />} />
-            <Route path="/item/:id" element={<ItemPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<ListPage />} />
+              <Route path="/list" element={<ListPage />} />
+              <Route path="/form" element={<FormPage />} />
+              <Route path="/item/:id" element={<ItemPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Layout>
         </BrowserRouter>
         <CustomToastContainer />
       </AppTheme>
